@@ -1,0 +1,461 @@
+create database hotelmanagment;
+
+-- Drop cammand
+CREATE TABLE ostomer(
+   id int primary key,
+   name nvarchar(40)
+   );
+DROP TABLE ostomer; 
+
+-- truncate cammand
+CREATE TABLE cstomer(
+   id int primary key,
+   name nvarchar(40)
+   );
+INSERT INTO cstomer (id, name)
+VALUES 
+('30001', 'Liam'),
+('30002', 'Emma');
+
+select * from cstomer;
+
+truncate table cstomer;
+
+-- Customer table using composite key
+CREATE TABLE customers (
+    Customer_id int AUTO_INCREMENT,
+    First_name nvarchar(50) NOT NULL,
+    Last_name nvarchar(50) NOT NULL,
+    cnic nvarchar(20) NOT NULL,
+    Gender nvarchar(1) NOT NULL,
+    Phone_Number nvarchar(50) NOT NULL,
+    PRIMARY KEY (Customer_id, cnic)
+);
+
+
+INSERT INTO customers (First_name, Last_name, cnic, Gender, Phone_Number)
+VALUES
+('Liam', 'Johnson', '12345-6789012-3', 'M', '1234567890'),
+('Emma', 'Wilson', '98765-4321098-7', 'F', '0987654321'),
+('Noah', 'Brown', '11111-2222222-3', 'M', '1122334455'),
+('Olivia', 'Jones', '33333-4444444-5', 'F', '2233445566'),
+('William', 'Taylor', '55555-6666666-7', 'M', '3344556677'),
+('Sophia', 'Martinez', '67890-1234567-8', 'F', '4455667788'),
+('James', 'Garcia', '23456-7890123-4', 'M', '5566778899'),
+('Isabella', 'Hernandez', '54321-6789012-1', 'F', '6677889900'),
+('Alexander', 'Lopez', '87654-3210987-6', 'M', '7788990011'),
+('Mia', 'Gonzalez', '43210-9876543-2', 'F', '8899001122');
+
+ALTER TABLE customers
+ADD Email NVARCHAR(100);
+
+UPDATE customers
+SET Email = CONCAT(First_name, '.', Last_name, '@gmail.com')
+WHERE Customer_id BETWEEN 1 AND 10;
+
+select * from customers;
+
+-- create booking table foreign key
+CREATE TABLE Booking (
+    Booking_id int primary key AUTO_INCREMENT,
+    Book_type nvarchar(50) NOT NULL,
+    Book_date nvarchar(50) NOT NULL,
+    Customer_id int NOT NULL
+);
+ALTER TABLE Booking
+MODIFY Book_type NVARCHAR(100);
+
+INSERT INTO Booking (Book_type, Book_date, Customer_id)
+VALUES
+('Direct', '2025-01-10', 1),
+('Online', '2025-01-11', 2),
+('Direct', '2025-01-12', 3),
+('Direct', '2025-01-13', 4),
+('Online', '2025-01-14', 5),
+('Online', '2025-01-15', 6),
+('Direct', '2025-01-16', 7),
+('Online', '2025-01-17', 8),
+('Direct', '2025-01-18', 9),
+('Online', '2025-01-19', 10);
+
+truncate table Booking;
+
+Select * from Booking;
+
+-- create table reservation
+CREATE TABLE Reservation (
+    Res_id  int primary key AUTO_INCREMENT,
+    check_in_date Date,
+    check_out_date Date,
+    No_of_days int,
+    Customer_id int,
+    Booking_id int
+);
+
+INSERT INTO Reservation (check_in_date, check_out_date, No_of_days, Customer_id, Booking_id)
+VALUES
+('2025-01-10', '2025-01-15', 5, 1, 1),
+('2025-01-12', '2025-01-14', 2, 2, 2),
+('2025-01-16', '2025-01-20', 4, 3, 3),
+('2025-01-18', '2025-01-25', 7, 4, 4),
+('2025-01-20', '2025-01-22', 2, 5, 5),
+('2025-01-22', '2025-01-28', 6, 6, 6),
+('2025-01-25', '2025-02-01', 7, 7, 7),
+('2025-01-30', '2025-02-03', 4, 8, 8),
+('2025-02-01', '2025-02-06', 5, 9, 9),
+('2025-02-05', '2025-02-10', 5, 10, 10);
+
+Select * from Reservation;
+
+CREATE TABLE Rooms (
+    Room_no int NOT NULL,
+    Room_type nvarchar(50)NOT NULL,
+    Bed_type nvarchar(50)NOT NULL,
+    No_of_occupants int,
+    Room_price float,
+    Customer_id int NOT NULL,
+    res_id int  NOT NULL
+   );
+
+INSERT INTO Rooms (Room_no, Room_type, Bed_type, No_of_occupants, Room_price, Customer_id, res_id)
+VALUES
+(101, 'Deluxe', 'King', 2, 150.00, 1, 1),
+(102, 'Standard', 'Queen', 2, 100.00, 2, 2),
+(103, 'Suite', 'King', 4, 300.00, 3, 3),
+(104, 'Deluxe', 'Queen', 2, 180.00, 4, 4),
+(105, 'Standard', 'Twin', 1, 80.00, 5, 5),
+(106, 'Deluxe', 'King', 3, 200.00, 6, 6),
+(107, 'Suite', 'King', 4, 350.00, 7, 7),
+(108, 'Standard', 'Queen', 2, 90.00, 8, 8),
+(109, 'Deluxe', 'King', 3, 250.00, 9, 9),
+(110, 'Suite', 'Queen', 2, 400.00, 10, 10);
+
+
+Select * from rooms;
+
+CREATE TABLE Staff (
+    Staff_id INT PRIMARY KEY AUTO_INCREMENT,
+    First_name NVARCHAR(50),
+    Last_name NVARCHAR(50),
+    Role NVARCHAR(50),
+    Gender NVARCHAR(1),
+    Hire_date DATE,
+    Salary FLOAT,
+    Phone_Number NVARCHAR(20)
+);
+
+INSERT INTO Staff (First_name, Last_name, Role, Gender, Hire_date, Salary, Phone_Number)
+VALUES
+('John', 'Doe', 'Manager', 'M', '2015-01-15', 50000.00, '1234567890'),
+('Emma', 'Watson', 'Receptionist', 'F', '2018-03-12', 30000.00, '9876543210'),
+('Michael', 'Smith', 'Chef', 'M', '2017-07-20', 40000.00, '4567891230'),
+('Sophia', 'Brown', 'Housekeeper', 'F', '2020-05-01', 25000.00, '6789012345'),
+('James', 'Davis', 'Security', 'M', '2019-11-23', 28000.00, '3456789012'),
+('Olivia', 'Garcia', 'Event Coordinator', 'F', '2016-09-18', 35000.00, '5678901234'),
+('William', 'Martinez', 'Bartender', 'M', '2018-02-10', 32000.00, '7890123456'),
+('Isabella', 'Lopez', 'Spa Therapist', 'F', '2021-06-15', 30000.00, '8901234567'),
+('Noah', 'Hernandez', 'Maintenance', 'M', '2014-08-10', 28000.00, '9012345678'),
+('Liam', 'Wilson', 'Accountant', 'M', '2013-12-05', 45000.00, '1230984567');
+
+
+CREATE TABLE Events (
+    Event_id INT PRIMARY KEY AUTO_INCREMENT,
+    Event_name NVARCHAR(100),
+    Event_date DATE,
+    Event_type NVARCHAR(50),
+    Number_of_guests INT,
+    Organized_by NVARCHAR(50),
+    Event_cost FLOAT,
+    Staff_id INT
+);
+
+INSERT INTO Events (Event_name, Event_date, Event_type, Number_of_guests, Organized_by, Event_cost, Staff_id)
+VALUES
+('Wedding Ceremony', '2025-02-14', 'Wedding', 100, 'Olivia', 5000.00, 6),
+('Corporate Meeting', '2025-03-10', 'Corporate', 50, 'Liam', 2000.00, 10),
+('Birthday Party', '2025-04-05', 'Birthday', 30, 'Emma', 1500.00, 2),
+('Music Concert', '2025-05-20', 'Concert', 200, 'John', 8000.00, 1),
+('Workshop on Cooking', '2025-06-15', 'Workshop', 20, 'Michael', 1200.00, 3),
+('Annual Gala Dinner', '2025-07-25', 'Gala', 150, 'Sophia', 7000.00, 4),
+('Charity Ball', '2025-08-30', 'Charity', 180, 'James', 9000.00, 5),
+('Product Launch', '2025-09-10', 'Corporate', 80, 'William', 4000.00, 7),
+('Spa Day Event', '2025-10-05', 'Wellness', 15, 'Isabella', 1800.00, 8),
+('Art Exhibition', '2025-11-20', 'Exhibition', 70, 'Noah', 3500.00, 9);
+
+delete from Events
+where Event_date='2025-02-14';
+
+select * from Events;
+
+CREATE TABLE Address (
+    Street nvarchar(50),
+    City nvarchar(50),
+    State nvarchar(50),
+    Country nvarchar(20),
+    Customer_id int NOT NULL ,
+    Zip_code int
+    );
+
+INSERT INTO Address (Street, City, State, Country, Customer_id, Zip_code)
+VALUES
+('123 Main St', 'New York', 'NY', 'USA', 1, 10001),
+('456 Oak Ave', 'Los Angeles', 'CA', 'USA', 2, 90001),
+('789 Pine Rd', 'Chicago', 'IL', 'USA', 3, 60601),
+('321 Elm St', 'Houston', 'TX', 'USA', 4, 77001),
+('654 Maple Dr', 'Phoenix', 'AZ', 'USA', 5, 85001),
+('987 Cedar Ln', 'Philadelphia', 'PA', 'USA', 6, 19101),
+('543 Birch Blvd', 'San Antonio', 'TX', 'USA', 7, 78201),
+('876 Willow Ct', 'San Diego', 'CA', 'USA', 8, 92101),
+('432 Aspen Way', 'Dallas', 'TX', 'USA', 9, 75201),
+('210 Cherry Pl', 'San Jose', 'CA', 'USA', 10, 95101);
+
+select * from address;
+
+Create TABLE Invoice (
+    Invoice_No int primary key AUTO_INCREMENT,
+    Res_id int ,
+    customer_id int NOT NULL
+);
+ 
+INSERT INTO Invoice (Res_id, customer_id)
+VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
+
+select * from invoice;
+
+CREATE TABLE Line (
+   Invoice_No int ,
+   Service_id int ,
+   Service_quantityy int,
+   res_id int 
+   );
+
+INSERT INTO Line(Invoice_No, Service_id, Service_quantityy, res_id)
+VALUES
+(1, 1, 2, 1),
+(2, 2, 3, 2),
+(3, 3, 1, 3),
+(4, 4, 4, 4),
+(5, 5, 2, 5),
+(6, 6, 1, 6),
+(7, 7, 3, 7),
+(8, 8, 2, 8),
+(9, 9, 4, 9),
+(10,10, 1, 10);
+
+select * from line;
+
+CREATE TABLE services (
+    Service_id int primary key AUTO_INCREMENT,
+    Service_type nvarchar(50),
+    Service_cost float
+);
+
+INSERT INTO services (Service_type, Service_cost)
+VALUES
+('Room Cleaning', 50.00),
+('Laundry', 20.00),
+('Food Delivery', 30.00),
+('Spa', 100.00),
+('Gym Access', 15.00),
+('Parking', 10.00),
+('Swimming Pool', 25.00),
+('Airport Pickup', 40.00),
+('Massage', 60.00),
+('Late Checkout', 35.00);
+
+select * from services;
+
+
+CREATE TABLE transactions (
+    Trans_No int primary key AUTO_INCREMENT,
+    Payment_Method nvarchar(50),
+    Payment_Date date,
+    Invoice_no int ,
+    Customer_id int NOT NULL
+    );
+INSERT INTO transactions (Payment_Method, Payment_Date, Invoice_no, Customer_id)
+VALUES
+('Credit Card', '2025-01-01', 1, 1),
+('Debit Card', '2025-01-02', 2, 2),
+('Cash', '2025-01-03', 3, 3),
+('Online Payment', '2025-01-04', 4, 4),
+('Credit Card', '2025-01-05', 5, 5),
+('Debit Card', '2025-01-06', 6, 6),
+('Cash', '2025-01-07', 7, 7),
+('Online Payment', '2025-01-08', 8, 8),
+('Credit Card', '2025-01-09', 9, 9),
+('Debit Card', '2025-01-10', 10, 10);
+
+select * from transactions;
+
+
+CREATE TABLE Satisfaction (
+    Satisfaction_ID int NOT NULL,
+    Satisfaction_level int ,
+    Trans_no int 
+);
+INSERT INTO Satisfaction (Satisfaction_ID, Satisfaction_level, Trans_no)
+VALUES
+(1, 5, 1),
+(2, 4, 2),
+(3, 3, 3),
+(4, 5, 4),
+(5, 2, 5),
+(6, 4, 6),
+(7, 3, 7),
+(8, 5, 8),
+(9, 4, 9),
+(10, 1, 10);
+
+select * from satisfaction;
+
+-- 1--Count the number of customers:--
+SELECT COUNT(*) FROM customers;
+
+-- 2--Sum of the number of bookings:
+SELECT SUM(Booking_id) FROM Booking;
+
+-- 3--Customer Check in no
+SELECT COUNT(customer_id) AS No_of_Customers,
+MONTH(check_in_date) AS Month
+FROM reservation
+GROUP BY MONTH(check_in_date)
+ORDER BY MONTH(check_in_date) ASC;
+
+-- 4--Group bookings by booking type
+SELECT Book_type, COUNT(*) FROM Booking GROUP BY Book_type;
+
+-- 5--Top 5 customers based on their total bookings:
+SELECT c.Customer_id, COUNT(*) as Total_Bookings 
+FROM customers c 
+JOIN Booking b ON c.Customer_id = b.Customer_id 
+GROUP BY c.Customer_id
+ORDER BY Total_Bookings DESC
+LIMIT 5;
+
+-- 6--Preferred Payment Methods:
+SELECT Payment_Method, count(*) num_transactions
+FROM transactions 
+GROUP BY payment_method
+ORDER BY num_transactions DESC;
+
+-- 7--Select all bookings made by a specific customer:
+SELECT * FROM Booking WHERE Customer_id = 2;
+
+-- 8--Select all bookings made by either of two specific customers:
+SELECT * FROM Booking WHERE Customer_id = 2 OR Customer_id =  1;
+
+-- 9--Sort bookings by their date:
+SELECT * FROM Booking ORDER BY Book_date;
+
+-- 10--Find the minimum and maximum booking dates:
+SELECT MIN(Book_date) as Min_Booking_Date, MAX(Book_date) as Max_Booking_Date FROM Booking;
+
+-- 11--Calculate the average number of days for each reservation:
+SELECT AVG(No_of_days) FROM Reservation;
+
+-- 12--Get all possible combinations of customers and rooms:
+SELECT * FROM customers c CROSS JOIN rooms r ON c.customer_id=r.Customer_id;
+
+-- 13--Get the number of reservations made by each customer:
+SELECT Customer_id, COUNT(*) as Number_of_Reservations
+FROM Reservation
+GROUP BY Customer_id;
+
+-- 14-- all customers whose Customer_id is either 1, 3, or 5.
+SELECT * 
+FROM customers
+WHERE Customer_id IN (1, 3, 5);
+
+-- 15--Get the number of rooms occupied by each customer:
+SELECT Customer_id, COUNT(*) as Number_of_Rooms_Occupied
+FROM Rooms
+GROUP BY Customer_id;
+
+-- 16--Get the total number of days stayed by each customer:
+SELECT Customer_id, SUM(No_of_days) as Total_Days
+FROM Reservation
+GROUP BY Customer_id;
+
+-- 17--Retrieve all customers whose first name starts with 'L'
+SELECT * 
+FROM customers
+WHERE First_name LIKE 'L%';
+
+
+-- 18--Get the number of bookings made by each customer:
+SELECT c.Customer_id, COUNT(*) as Number_of_Bookings
+FROM Booking
+JOIN customers c ON Booking.Customer_id = c.Customer_id
+GROUP BY c.Customer_id;
+
+-- 19--Get the number of transactions made by each customer:
+SELECT c.Customer_id, COUNT(*) as Number_of_Transactions
+FROM Transactions
+JOIN Invoice i ON Transactions.Invoice_no = i.Invoice_No
+JOIN customers c ON i.customer_id = c.Customer_id
+GROUP BY c.Customer_id;
+
+-- 20--Get the number of invoices generated for each customer:
+SELECT Invoice.customer_id, COUNT(*) as Number_of_Invoices
+FROM Invoice
+JOIN customers ON Invoice.customer_id = customers.Customer_id
+GROUP BY Invoice.customer_id;
+
+-- 21--Get the number of reservations made by each customer in a specific month:
+SELECT Customer_id, COUNT(*) as Number_of_Reservations
+FROM Reservation
+WHERE check_in_date BETWEEN '01/15/2018' AND '03/11/2018'
+GROUP BY Customer_id;
+
+-- 22--- Total cost on services 
+SELECT Service_type, SUM(Service_cost) as Total_Revenue
+FROM services
+GROUP BY Service_type;
+
+-- 23--Combine all customer data and all booking data into one result set.
+SELECT Customer_id, First_name, Last_name, Gender, Phone_Number 
+FROM customers
+UNION ALL
+SELECT Booking_id, Book_type, Book_date, Customer_id, NULL AS Phone_Number 
+FROM Booking;
+
+-- 24--Retrieve all customers along with their booking information, even if they haven't made a booking
+SELECT customers.Customer_id, customers.First_name, customers.Last_name, Booking.Booking_id, Booking.Book_type, Booking.Book_date
+FROM customers
+LEFT JOIN Booking ON customers.Customer_id = Booking.Customer_id;
+
+-- 25--Get the total amount spent by each customer on services:
+SELECT c.Customer_id, SUM(s.Service_cost * l.Service_quantityy) AS total_amount_spent
+FROM services s
+JOIN Line l ON l.Service_id = s.Service_id
+JOIN Reservation r ON l.Res_id = r.Res_id
+JOIN customers c ON r.Customer_id = c.Customer_id
+GROUP BY c.Customer_id;
+
+-- 26--Count the number of customers those book online
+SELECT COUNT(*) 
+FROM customers 
+WHERE Customer_id IN (SELECT Customer_id FROM Booking WHERE Book_type = 'Online');
+
+-- 27--Sum of the number of male those book hotel:
+SELECT SUM(Booking_id) 
+FROM Booking 
+WHERE Customer_id IN (SELECT Customer_id FROM customers WHERE Gender = 'M');
+ 
+ 
+ -- 28--Filter Customers with More Than 5 Bookings:
+SELECT Customer_id, COUNT(*) AS Number_of_Bookings
+FROM Booking
+GROUP BY Customer_id
+HAVING COUNT(*) > 5;
